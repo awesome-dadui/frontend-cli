@@ -1,0 +1,14 @@
+{
+  "name": "dmall-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "",
+  "repository": "",
+  "license": "",
+  "bin": {
+    "dmall": "./bin/index.js"
+  },
+  "dependencies": {
+    "commander": "^8.2.0"
+  }
+}
