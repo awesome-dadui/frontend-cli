@@ -9,6 +9,10 @@
     "dmall": "./bin/index.js"
   },
   "dependencies": {
-    "commander": "^8.2.0"
+    "commander": "^8.2.0",
+    "git-clone": "^0.2.0",
+    "inquirer": "^8.2.0",
+    "shelljs": "^0.8.4",
+    "tracer": "^1.1.5"
   }
 }
