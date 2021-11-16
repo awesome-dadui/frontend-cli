@@ -76,12 +76,12 @@ commander
   });
 
 commander
-  .command('add')
-  .description('创建一个api page component')
+  .command('add [args...]')
+  .description('增加物料 -c 组件  -p 页面')
   .option('-p, --page', 'Skip prompts and use saved or remote preset')
   .option('-c, --component', 'Use git clone when fetching remote preset')
-  .action((name, option) => {
-    console.log(name, option)
+  .action((args) => {
+    console.log('args:', args)
   })
 
 commander.parse(process.argv);
