@@ -1,56 +1,78 @@
 #!/usr/bin/env node
 
-const package = require('../package.json');
+const fs = require('fs');
+const path = require('path');
+
 const commander = require('commander');
 const inquirer = require('inquirer');
 const clone = require('git-clone');
 const shell = require('shelljs');
 const log = require('tracer').colorConsole();
 
-// 项目地址
-const projectUrl = {
-  'empty-vue-template': 'https://github.com/murongqimiao/joao-template', // 空白库
+const package = require('../package.json');
+const {copy} = require('./file');
+
+function resolvePath (dir) {
+  return path.resolve(__dirname, '../', dir);
 }
 
-const questions = [
-  {
-    type: 'input',
-    name: 'projectName',
-    message: '请输入项目名',
-    filter (val) {
-      return val;
-    }
-  },
-  {
-    type: 'list',
-    name: 'type',
-    message: '请选择使用的模板',
-    choices: ['empty-vue-template', '模板2', '模板3'],
-    filter (val) {
-      return val.toLowerCase();
-    }
-  }
-]
+const projectUrl = {
+  'project-template': resolvePath('./template/project'),
+  'empty-vue-template': 'https://github.com/murongqimiao/joao-template',
+}
 
 commander.version(package.version);
 
 commander
   .command('init')
-  .description('用来初始化项目，拉取模版')
+  .description('用来初始化项目拉取模版')
   .action((source) => {
-    console.log('正在构建...')
+    // console.log('正在构建...')
     inquirer
-      .prompt(questions)
+      .prompt([
+        {
+          type: 'input',
+          name: 'projectName',
+          message: '请输入项目名',
+          filter (val) {
+            return val;
+          }
+        },
+        {
+          type: 'list',
+          name: 'source',
+          message: '请选择克隆源',
+          choices: ['local', 'github'],
+          filter (val) {
+            return val;
+          }
+        },
+        {
+          type: 'list',
+          name: 'type',
+          message: '请选择使用的模板',
+          choices: ['project-template', 'empty-vue-template', '模板2', '模板3'],
+          filter (val) {
+            return val.toLowerCase();
+          }
+        }
+      ])
       .then(answers => {
-        // console.log('answers', answers)
-        const {projectName, type} = answers
-        console.log(projectName, type)
+        console.log('answers', answers)
+        const {projectName, source, type} = answers
+        // console.log(projectName, source, type);
 
-        clone(`${projectUrl[type]}`, `./${projectName}`, null, function () {
-          log.info('项目构建完成')
-          shell.rm('-rf', `./${projectName}/.git`);
-          log.info(`清除掉${projectName}的git, 记得进入项目npm install`)
-        })
+        let sourcePath = projectUrl[type];
+        let targetPath = `./${projectName}`;
+        if (source === 'local') {
+          copy(sourcePath, targetPath);
+        } else if (source === 'github') {
+          clone(sourcePath, targetPath, null, function () {
+            log.info('项目构建完成')
+            shell.rm('-rf', `./${projectName}/.git`);
+            log.info(`清除掉${projectName}的git, 记得进入项目npm install`)
+          })
+        }
       })
   });
 

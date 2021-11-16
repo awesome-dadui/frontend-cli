@@ -1,22 +1,13 @@
-创建 & 初始化
+创建项目模版
 
 $ dmall init
 
-开发 & 实时编译
+添加api、组件、页面
 
-$ dmall dev
+$ dmall add [option]
 
-语法检查 & 测试
+option 参数
 
-$ dmall test
-
-构建 & 打包
-
-$ dmall build
-
-
-/*// 解析dmall 命令和参数
-program.arguments('<cmd> [env]').action((cmd, env) => {
-  console.log(cmd, env);
-  compile(cmd)
-});*/
+* -api 增加api
+* -c 增加组件
+* -p 增加页面
