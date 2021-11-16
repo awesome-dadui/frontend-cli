@@ -25,9 +25,8 @@ commander.version(package.version);
 
 commander
   .command('init')
-  .description('用来初始化项目拉取模版')
-  .action((source) => {
-    // console.log('正在构建...')
+  .description('初始化项目模版')
+  .action(() => {
     inquirer
       .prompt([
         {
@@ -75,5 +74,14 @@ commander
         }
       })
   });
+
+commander
+  .command('add')
+  .description('创建一个api page component')
+  .option('-p, --page', 'Skip prompts and use saved or remote preset')
+  .option('-c, --component', 'Use git clone when fetching remote preset')
+  .action((name, option) => {
+    console.log(name, option)
+  })
 
 commander.parse(process.argv);
