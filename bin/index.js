@@ -23,11 +23,9 @@ const projectUrl = {
 
 program
   .version(package.version)
-  // .option('-n, --name <name>', 'your name', 'Zzz')
-  // .option('-a, --age <age>', 'your age', '22')
-  .option('-d, --do', 'Do something')
+  .option('-d, --do', 'Do something', 'writing code')
   .action(function (task) {
-    console.log(`Do this ${task}`);
+    console.log(`Do this `, task);
   });
 
 program
@@ -86,20 +84,91 @@ program
 program
   .command('add')
   .description('增加物料：-c增加组件(damll add -c componentName)，-p增加页面（dmall add -p pageName）')
+  .option('-a, --api')
   .option('-c, --component <name>')
   .option('-p, --page <name>')
   .action((options) => {
-    console.log('source command called', options)
+    // console.log('add command called', options)
+
+    if (options.api) {
+      console.log("add api")
+      let sourcePath = resolvePath('./template/api');
+      let targetPath = `./api`;
+      copy(sourcePath, targetPath);
+    }
 
     if (options.component) {
       let componentName = options.component;
-      console.log("componentName:", componentName);
+      // console.log("componentName:", componentName);
+      let sourceFile = resolvePath('./template/component/template.vue');
+      let targetFile = `./${componentName}.vue`;
+
+      copyFile(sourceFile, targetFile, function (content) {
+        content = content.replace(/class="template"/g, `class="${componentName}"`);
+        content = content.replace(/name: 'template'/g, `name: '${componentName}'`);
+        content = content.replace(/\.template/g, `.${componentName}`);
+        return content;
+      })
     }
 
     if (options.page) {
       let pageName = options.page;
       console.log("pageName:", pageName);
+
+      ['.dml', '.dss', '.js'].forEach(suffix => {
+        let sourceFile = resolvePath(`./template/page/demo/demo${suffix}`);
+        let targetFile = `./${pageName}/${pageName}${suffix}`;
+
+        copyFile2(pageName, sourceFile, targetFile, function (content) {
+          return content;
+        })
+      })
     }
   })
+
+function copyFile (from, to, formart) {
+  let content = fs.readFileSync(from, 'utf-8');
+
+  formart && (content = formart(content));
+
+  fs.writeFile(to, content, err => {
+    if (err) {
+      console.error(err)
+      return
+    }
+  })
+}
+
+function copyFile2 (pageName, from, to, formart) {
+  console.log(pageName, from, to)
+  let content = fs.readFileSync(from, 'utf-8');
+
+  formart && (content = formart(content));
+
+  fs.exists(`${pageName}`, function (err) {
+    console.log('err:', err)
+    if (!err) {
+      fs.mkdir(`${pageName}`, (err) => {
+        if (err) {
+          return
+        }
+
+        fs.writeFile(to, content, err => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
+      })
+    } else {
+      fs.writeFile(to, content, err => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
+    }
+  })
+}
 
 program.parse(process.argv);
