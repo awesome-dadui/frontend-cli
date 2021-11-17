@@ -2,7 +2,7 @@
   "name": "dmall-cli",
   "version": "1.0.0",
   "main": "index.js",
-  "description": "",
+  "description": "Building CLI in Nodejs ",
   "repository": "",
   "license": "",
   "bin": {

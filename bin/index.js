@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const commander = require('commander');
+const program = require('commander');
 const inquirer = require('inquirer');
 const clone = require('git-clone');
 const shell = require('shelljs');
@@ -21,11 +21,19 @@ const projectUrl = {
   'empty-vue-template': 'https://github.com/murongqimiao/joao-template',
 }
 
-commander.version(package.version);
+program
+  .version(package.version)
+  // .option('-n, --name <name>', 'your name', 'Zzz')
+  // .option('-a, --age <age>', 'your age', '22')
+  .option('-d, --do', 'Do something')
+  .action(function (task) {
+    console.log(`Do this ${task}`);
+  });
 
-commander
+program
   .command('init')
   .description('初始化项目模版')
+  .alias('i')
   .action(() => {
     inquirer
       .prompt([
@@ -75,13 +83,23 @@ commander
       })
   });
 
-commander
-  .command('add [args...]')
-  .description('增加物料 -c 组件  -p 页面')
-  .option('-p, --page', 'Skip prompts and use saved or remote preset')
-  .option('-c, --component', 'Use git clone when fetching remote preset')
-  .action((args) => {
-    console.log('args:', args)
+program
+  .command('add')
+  .description('增加物料：-c增加组件(damll add -c componentName)，-p增加页面（dmall add -p pageName）')
+  .option('-c, --component <name>')
+  .option('-p, --page <name>')
+  .action((options) => {
+    console.log('source command called', options)
+
+    if (options.component) {
+      let componentName = options.component;
+      console.log("componentName:", componentName);
+    }
+
+    if (options.page) {
+      let pageName = options.page;
+      console.log("pageName:", pageName);
+    }
   })
 
-commander.parse(process.argv);
+program.parse(process.argv);
