@@ -50,6 +50,54 @@ function copyFile (from, to) {
   })
 }
 
+function copyFile2 (from, to, formart) {
+  let content = fs.readFileSync(from, 'utf-8');
+
+  formart && (content = formart(content));
+
+  fs.writeFile(to, content, err => {
+    if (err) {
+      console.error(err)
+      return
+    }
+  })
+}
+
+function copyFile3 (pageName, from, to, formart) {
+  console.log(pageName, from, to)
+  let content = fs.readFileSync(from, 'utf-8');
+
+  formart && (content = formart(content));
+
+  fs.exists(`${pageName}`, function (err) {
+    console.log('fs.exists err:', err)
+    if (!err) {
+      fs.mkdir(`${pageName}`, (err) => {
+        console.log('fs.mkdir:', err)
+        if (err) {
+          return
+        }
+
+        fs.writeFile(to, content, err => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
+      })
+    } else {
+      fs.writeFile(to, content, err => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
+    }
+  })
+}
+
 module.exports = {
-  copy
+  copy,
+  copyFile2,
+  copyFile3
 }
