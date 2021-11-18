@@ -10,7 +10,7 @@ const shell = require('shelljs');
 const log = require('tracer').colorConsole();
 
 const package = require('../package.json');
-const {copy, copyFile2, copyFile3} = require('./file');
+const {copy, copyFile2} = require('./file');
 
 function resolvePath (dir) {
   return path.resolve(__dirname, '../', dir);
@@ -91,7 +91,7 @@ program
     // console.log('add command called', options)
 
     if (options.api) {
-      console.log("add api")
+      // console.log("add api")
       let sourcePath = resolvePath('./template/api');
       let targetPath = `./api`;
       copy(sourcePath, targetPath);
@@ -113,19 +113,37 @@ program
 
     if (options.page) {
       let pageName = options.page;
-      console.log("pageName:", pageName);
+      // console.log("pageName:", pageName);
 
       ['.dml', '.dss', '.js'].forEach((suffix, idx) => {
         let sourceFile = resolvePath(`./template/page/demo/demo${suffix}`);
         let targetFile = `./${pageName}/${pageName}${suffix}`;
 
-        setTimeout(() => {
-          copyFile3(pageName, sourceFile, targetFile, function (content) {
-            return content;
-          })
-        }, idx * 50)
+        copyFile(sourceFile, targetFile);
       })
     }
   })
+
+function copyFile (from, to) {
+  mkdirsSync(path.dirname(to));
+
+  fs.copyFileSync(from, to, function (err) {
+    if (err) {
+      console.log(err)
+      return
+    }
+  });
+}
+
+function mkdirsSync (dirname) {
+  if (fs.existsSync(dirname)) {
+    return true;
+  } else {
+    if (mkdirsSync(path.dirname(dirname))) {
+      fs.mkdirSync(dirname);
+      return true;
+    }
+  }
+}
 
 program.parse(process.argv);
