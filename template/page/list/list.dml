@@ -1,0 +1,64 @@
+<page title="{{ config.title }}" backspace>
+  <actions>
+    <button text="新建活动" icon="el-icon-plus" status="primary" @click="onClickOperation('create')"/>
+  </actions>
+  <head>
+    <form x="form" type="search" :confirm-button="true" bindconfirm="search">
+      <template dm-for="{{ (item, index) in config.head.form }}">
+        <item v-if="item.name ==='activityDate'"
+              label="活动时间"
+              name="activityDate"
+              before-render="{{activityTimeBeforeRender}}">
+          <form name="form">
+            <item label="开始日期"
+                  name="startTime"
+                  node="date-picker"
+                  colspan="{{ span: 6 }}"/>
+            <item label="结束日期"
+                  name="endTime"
+                  node="date-picker"
+                  colspan="{{ span: 6 }}"/>
+          </form>
+        </item>
+        <item v-else-if="item.name==='creator'"
+              label="创建人"
+              node="input"
+              name="creator">
+        </item>
+        <c-item v-else model="{{item}}"></c-item>
+      </template>
+    </form>
+  </head>
+  <main x="normalData">
+    <table x="table"
+           pageable
+           ajax="{{ config.table.ajax }}"
+           height="100%"
+           beforeRequest="{{tableBeforeRequest}}">
+      <cell :label="item.label" dm-for="{{ (item, index) in config.table.thead }}" key="{{ index }}">
+        <template dm-if="{{ item.label ==='操作' }}">
+          <template dm-for="{{ (button,idx) in item.getButtons(cellData.rowData) }}">
+            <button text="{{ button.text }}"
+                    :key="idx"
+                    @click="onClickOperation(button.type,cellData.rowData.id)">
+            </button>
+          </template>
+        </template>
+        <template dm-if="{{ item.label ==='活动时间' }}">
+          {{ item.text(cellData.rowData) }}
+        </template>
+        <template dm-if="{{ item.label ==='活动状态' }}">
+          <tag status="{{item.status(cellData.rowData.status)}}"
+               text="{{item.text(cellData.rowData.status)}}"
+               type="status"/>
+        </template>
+        <template dm-if="{{ item.label ==='创建时间' }}">
+          {{ cellData.rowData.created && moment(cellData.rowData.created).format('YYYY-MM-DD HH:mm:ss') }}
+        </template>
+        <template dm-else>
+          {{ cellData.rowData[item.key] }}
+        </template>
+      </cell>
+    </table>
+  </main>
+</page>

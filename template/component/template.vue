@@ -17,7 +17,15 @@
     watch: {},
     created () {},
     mounted () {},
-    methods: {},
+    methods: {
+      getData () {
+        let res = {};
+        return res;
+      },
+      setData (data) {
+        console.log(data)
+      }
+    },
     destroyed () {}
   })
 </script>

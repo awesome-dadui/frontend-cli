@@ -86,9 +86,9 @@ program
   .description('增加物料：-c增加组件(damll add -c name)，-p增加页面（dmall add -p name）')
   .option('-a, --api')
   .option('-c, --component <name>')
-  .option('-p, --page <name>')
+  .option('-p, --page <args...>')
   .action((options) => {
-    // console.log('add command called', options)
+    console.log('add command called', options)
 
     if (options.api) {
       // console.log("add api")
@@ -112,15 +112,35 @@ program
     }
 
     if (options.page) {
-      let pageName = options.page;
-      // console.log("pageName:", pageName);
+      let args = options.page;
+      // console.log("args:", args);
 
-      ['.dml', '.dss', '.js'].forEach((suffix, idx) => {
-        let sourceFile = resolvePath(`./template/page/demo/demo${suffix}`);
-        let targetFile = `./${pageName}/${pageName}${suffix}`;
+      if (args.length === 1) {
+        let name = args[0];
+        ['.dml', '.dss', '.js'].forEach((suffix, idx) => {
+          let sourceFile = resolvePath(`./template/page/demo/demo${suffix}`);
+          let targetFile = `./${name}/${name}${suffix}`;
 
-        copyFile(sourceFile, targetFile);
-      })
+          copyFile(sourceFile, targetFile);
+        })
+      } else if (args.length === 2) {
+        if (args[0] === 'list') {
+          let type = 'list';
+          let name = args[1];
+
+          ['c-item.vue', 'list.dml', 'list.dss', 'list.js'].forEach((file, idx) => {
+            let suffix = path.extname(file);
+            let fileName = path.basename(file, suffix);
+
+            let sourceFile = resolvePath(`./template/page/${type}/${file}`);
+            let targetFile = `./${name}/${fileName === type ? name : fileName}${suffix}`;
+
+            console.log(sourceFile, targetFile, fileName, suffix);
+            //
+            copyFile(sourceFile, targetFile);
+          })
+        }
+      }
     }
   })
 
