@@ -83,7 +83,7 @@ program
 
 program
   .command('add')
-  .description('增加物料：-c增加组件(damll add -c name)，-p增加页面（dmall add -p name）')
+  .description('增加物料：-a增加api（dmall add -a），-c增加组件(damll add -c <name>)，-p增加页面（dmall add -p <args...>）')
   .option('-a, --api')
   .option('-c, --component <name>')
   .option('-p, --page <args...>')

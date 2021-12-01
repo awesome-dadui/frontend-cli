@@ -10,14 +10,17 @@ let env = `${/localhost|test/g.test(host)
 
 let ajax = CabinX.ajax({withCredentials: true});
 
-function send (type, url, params, loading, notice) {
+function send (type, option) {
+  let {url, data, loading = true, notice = true} = option
+
   loading && (loading = CabinX.loading());
 
-  type === `post` && (params = {param: JSON.stringify(params)});
+  type === `post` && (data = {data: JSON.stringify(data)});
 
-  let option = {url, params}
-
-  return ajax[`${type}`](option).then((res) => {
+  return ajax[`${type}`]({
+    url,
+    params: data
+  }).then((res) => {
     let {code, message, result} = res;
     if (notice && code !== `0000`) {
       CabinX.notice({
@@ -33,14 +36,12 @@ function send (type, url, params, loading, notice) {
 
 // 封装GET请求
 function get (obj) {
-  let {url, params, loading = true, notice = true} = obj
-  return send('get', url, params, loading, notice)
+  return send('get', !obj.hasOwnProperty('data') ? {data: obj} : obj)
 }
 
 // 封装POST请求
 function post (obj) {
-  let {url, params, loading = true, notice = true} = obj
-  return send('post', url, params, loading, notice)
+  return send('post', !obj.hasOwnProperty('data') ? {data: obj} : obj);
 }
 
 /**
