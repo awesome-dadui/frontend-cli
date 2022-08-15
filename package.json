@@ -1,12 +1,12 @@
 {
-  "name": "xxx-cli",
+  "name": "frontend-cli",
   "version": "1.0.0",
   "main": "index.js",
   "description": "Building CLI in Nodejs ",
   "repository": "",
   "license": "",
   "bin": {
-    "xxx": "./bin/index.js"
+    "fe": "./bin/index.js"
   },
   "dependencies": {
     "@babel/core": "^7.1.2",

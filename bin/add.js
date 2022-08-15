@@ -1,3 +1,7 @@
+const path = require('path')
+const fs = require('fs')
+const {resolvePath} = require("./util")
+
 function addCommand(options) {
   console.log('add command called', options)
 
