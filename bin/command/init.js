@@ -4,10 +4,9 @@ const shell = require('shelljs')
 const log = require('tracer').colorConsole()
 
 const {copy} = require('./util/file')
-const {resolvePath} = require('./util')
 
 const projectUrl = {
-  'project-template': resolvePath('./template/project'),
+  'project-template': path.resolve(__dirname, `../template/project`),
   'empty-vue-template': 'https://github.com/murongqimiao/joao-template',
 }
 

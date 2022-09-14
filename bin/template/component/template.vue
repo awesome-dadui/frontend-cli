@@ -10,23 +10,23 @@
     name: 'template',
     components: {},
     props: [],
-    data () {
+    data() {
       return {}
     },
     computed: {},
     watch: {},
-    created () {},
-    mounted () {},
+    created() {},
+    mounted() {},
     methods: {
-      getData () {
-        let res = {};
-        return res;
+      getData() {
+        let res = {}
+        return res
       },
-      setData (data) {
+      setData(data) {
         console.log(data)
       }
     },
-    destroyed () {}
+    destroyed() {}
   })
 </script>
 

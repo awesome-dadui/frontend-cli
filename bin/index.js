@@ -3,23 +3,15 @@
 const program = require('commander')
 const package = require('../package.json')
 
-const {initCommand} = require('./init')
-const {addCommand} = require('./add')
-const {devCommand} = require('./dev')
+// const {initCommand} = require('./command/init')
+const {addCommand} = require('./command/add')
+// const {devCommand} = require('./command/dev')
 
 program
   .version(package.version)
   .option('-d, --do', 'Do something', 'writing code')
   .action(function (task) {
     console.log(`Do this `, task)
-  })
-
-program
-  .command('init')
-  .description('初始化项目模版')
-  .alias('i')
-  .action(() => {
-    initCommand()
   })
 
 program
@@ -32,10 +24,20 @@ program
     addCommand(options)
   })
 
+/*program
+  .command('init')
+  .description('初始化项目模版')
+  .alias('i')
+  .action(() => {
+    initCommand()
+  })
+
+
+
 program
   .command('dev')
   .action(() => {
     devCommand()
-  })
+  })*/
 
 program.parse(process.argv)
