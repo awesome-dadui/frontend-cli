@@ -44,10 +44,11 @@ function onChangeFileListener(file) {
   let fileExtname = path.extname(file)
   let fileName = path.basename(file, fileExtname)
   let fileBaseName = path.basename(file)
-  let inputPath = resolve(file)
+  let inputPath = path.resolve(file)
   let outputPath = inputPath.replace('src', 'dist')
   console.log('inputPath   :', inputPath)
   console.log('outputPath  :', outputPath)
+  return
 
   switch (fileExtname) {
     case ".js":

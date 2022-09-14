@@ -1,14 +1,9 @@
+const path = require('path')
 const inquirer = require('inquirer')
 const clone = require('git-clone')
 const shell = require('shelljs')
 const log = require('tracer').colorConsole()
-
-const {copy} = require('./util/file')
-
-const projectUrl = {
-  'project-template': path.resolve(__dirname, `../template/project`),
-  'empty-vue-template': 'https://github.com/murongqimiao/joao-template',
-}
+const {copy} = require('../utils/file')
 
 function initCommand() {
   inquirer.prompt([
@@ -33,21 +28,24 @@ function initCommand() {
       type: 'list',
       name: 'type',
       message: '请选择使用的模板',
-      choices: ['project-template', 'empty-vue-template', '模板2', '模板3'],
+      choices: ['pixi', 'vue', 'react'],
       filter(val) {
         return val.toLowerCase()
       }
     }
   ]).then(answers => {
     console.log('answers', answers)
-    const {projectName, source, type} = answers
-    // console.log(projectName, source, type);
+    let {projectName, source, type} = answers
+    let sourcePath = path.resolve(__dirname, `../template/project/${type}`)
+    let targetPath = path.resolve(`./${projectName}`)
+    // console.log(sourcePath)
+    // console.log(targetPath)
 
-    let sourcePath = projectUrl[type]
-    let targetPath = `./${projectName}`
     if (source === 'local') {
       copy(sourcePath, targetPath)
     } else if (source === 'github') {
+      console.log('github克隆项目有问题,待开发...')
+      return
       clone(sourcePath, targetPath, null, function () {
         log.info('项目构建完成')
         shell.rm('-rf', `./${projectName}/.git`)

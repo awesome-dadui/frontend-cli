@@ -3,7 +3,7 @@
 const program = require('commander')
 const package = require('../package.json')
 
-// const {initCommand} = require('./command/init')
+const {initCommand} = require('./command/init')
 const {addCommand} = require('./command/add')
 // const {devCommand} = require('./command/dev')
 
@@ -24,7 +24,7 @@ program
     addCommand(options)
   })
 
-/*program
+program
   .command('init')
   .description('初始化项目模版')
   .alias('i')
@@ -32,7 +32,7 @@ program
     initCommand()
   })
 
-
+/*
 
 program
   .command('dev')
