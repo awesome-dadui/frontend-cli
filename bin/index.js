@@ -5,7 +5,7 @@ const package = require('../package.json')
 
 const {initCommand} = require('./command/init')
 const {addCommand} = require('./command/add')
-// const {devCommand} = require('./command/dev')
+const {devCommand} = require('./command/dev')
 
 program
   .version(package.version)
@@ -32,12 +32,10 @@ program
     initCommand()
   })
 
-/*
-
 program
   .command('dev')
   .action(() => {
     devCommand()
-  })*/
+  })
 
 program.parse(process.argv)

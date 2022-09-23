@@ -4,13 +4,7 @@ const chokidar = require('chokidar')
 const babel = require('@babel/core')
 const moment = require('moment')
 
-function resolve(file) {
-  return path.resolve(file)
-}
-
 function devCommand() {
-  console.log('dmall dev start.')
-
   chokidar
     .watch('.', {
       ignored: [
@@ -48,7 +42,6 @@ function onChangeFileListener(file) {
   let outputPath = inputPath.replace('src', 'dist')
   console.log('inputPath   :', inputPath)
   console.log('outputPath  :', outputPath)
-  return
 
   switch (fileExtname) {
     case ".js":
@@ -58,7 +51,6 @@ function onChangeFileListener(file) {
         minified: true,
       }, function (err, result) {
         // console.log(err, result)
-
         let code = `window.snadbox(\"define(function (require, exports, module) {${result.code.replace(/"|'/g, '\\"').replace(/\n/g, '\\n')}})\");`
         console.log(code)
 
@@ -73,8 +65,6 @@ function onChangeFileListener(file) {
         if (err) return
         fs.writeFile(outputPath, data, (err) => {
           if (err) return
-
-
           console.log(`${moment().format('YYYY-MM-DD HH:mm:ss:SSS')} 文件写入成功:`, outputPath)
         })
       })
