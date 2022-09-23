@@ -3,9 +3,9 @@
 const program = require('commander')
 const package = require('../package.json')
 
-const {initCommand} = require('./command/init')
-const {addCommand} = require('./command/add')
-const {devCommand} = require('./command/dev')
+const {initCommand} = require('./cmd/init')
+const {addCommand} = require('./cmd/add')
+const {devCommand} = require('./cmd/dev')
 
 program
   .version(package.version)
