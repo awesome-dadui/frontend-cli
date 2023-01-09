@@ -1,5 +1,5 @@
 ```
-// 解析dmall 命令和参数
+// 解析fe 命令和参数
 program.arguments('<cmd> [env]').action((cmd, env) => {
   console.log(cmd, env);
   compile(cmd)
